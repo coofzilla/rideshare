@@ -1,10 +1,10 @@
-const app = require("./app");
+import { get, listen } from "./app";
 const PORT = 5000;
 
-app.get('/api', (req, res)=>{
-    res.send('WORKING')
-})
+get("/api", (req, res) => {
+  res.send("WORKING");
+});
 
-app.listen(PORT, () => {
+listen(PORT, () => {
   console.log("RUNNING ON 5000");
 });
