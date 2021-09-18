@@ -6,6 +6,47 @@ module.exports = {
     res.send({ hi: "there" });
   },
 
+  async index(req, res, next) {
+    try {
+      const { lng, lat } = await req.query;
+      const drivers = await Driver.aggregate([
+        {
+          $geoNear: {
+            near: {
+              type: "Point",
+              coordinates: [parseFloat(lng), parseFloat(lat)],
+            },
+            distanceField: "dist.calculated",
+            maxDistance: 200000,
+            spherical: true,
+          },
+        },
+      ]);
+
+      res.send(drivers);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
+  // async index(req, res, next) {
+  //   const { lng, lat } = await req.query;
+  //   const drivers = Driver.aggregate([
+  //     {
+  //       $geoNear: {
+  //         near: {
+  //           type: "Point",
+  //           coordinates: [parseFloat(lng), parseFloat(lat)],
+  //         },
+  //         distanceField: "dist.calculated",
+  //         maxDistance: 200000,
+  //         spherical: true,
+  //       },
+  //     },
+  //   ]);
+  //   res.send(drivers);
+  // },
+
   async create(req, res, next) {
     try {
       const driverProps = await req.body;

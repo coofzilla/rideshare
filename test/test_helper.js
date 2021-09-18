@@ -11,9 +11,10 @@ before(async () => {
 });
 
 beforeEach(async () => {
-  const { drivers } = await mongoose.connection.collections;
+  const { drivers } = mongoose.connection.collections;
 
   try {
     await drivers.drop();
+    await drivers.createIndex({ "geometry.coordinates": "2dsphere" });
   } catch {}
 });

@@ -32,4 +32,23 @@ describe("Drivers controller", () => {
     const deletedDriver = await Driver.findOne({ email: "test@delete.com" });
     assert(deletedDriver === null);
   });
+
+  it("GET to /api/drivers finds drivers in a location", async () => {
+    const seattleDriver = await new Driver({
+      email: "seattle@test.com",
+      geometry: { type: "Point", coordinates: [-122, 47] },
+    });
+    const miamiDriver = await new Driver({
+      email: "miami@test.com",
+      geometry: { type: "Point", coordinates: [-80.253, 25.791] },
+    });
+
+    await seattleDriver.save();
+    await miamiDriver.save();
+    const response = await request(app).get("/api/drivers?lng=-80&lat=25");
+
+    assert(response.body.length === 1);
+
+    assert(response.body[0].email === "miami@test.com");
+  });
 });
