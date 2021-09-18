@@ -6,9 +6,13 @@ module.exports = {
     res.send({ hi: "there" });
   },
 
-  async create(req, res) {
-    const driverProps = req.body;
-    const driver = await Driver.create(driverProps);
-    res.send(driver);
+  async create(req, res, next) {
+    try {
+      const driverProps = req.body;
+      const driver = await Driver.create(driverProps);
+      res.send(driver);
+    } catch {
+      next();
+    }
   },
 };
