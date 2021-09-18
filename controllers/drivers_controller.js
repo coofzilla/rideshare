@@ -15,4 +15,29 @@ module.exports = {
       next(error);
     }
   },
+
+  async edit(req, res, next) {
+    try {
+      const driverId = await req.params.id;
+      const driverProps = req.body;
+
+      const driver = await Driver.findByIdAndUpdate(
+        { _id: driverId },
+        driverProps
+      );
+      res.send(driver);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async delete(req, res, next) {
+    try {
+      const driverId = await req.params.id;
+      const driver = await Driver.findOneAndDelete({ _id: driverId });
+      res.status(204).send(driver);
+    } catch (error) {
+      next(error);
+    }
+  },
 };

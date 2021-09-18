@@ -14,4 +14,22 @@ describe("Drivers controller", () => {
     const newCount = await Driver.countDocuments();
     assert(count + 1 === newCount);
   });
+
+  it("PUT to /api/drivers/id edits an existing driver", async () => {
+    const driver = await new Driver({ email: "test@put.com", driving: false });
+    await driver.save();
+    await request(app).put(`/api/drivers/${driver._id}`).send({
+      driving: true,
+    });
+    const driverUpdated = await Driver.findOne({ email: "test@put.com" });
+    assert(driverUpdated.driving === true);
+  });
+
+  it("DELETE /api/drivers/id can delete a driver", async () => {
+    const driver = await new Driver({ email: "test@delete.com" });
+    await driver.save();
+    await request(app).delete(`/api/drivers/${driver._id}`);
+    const deletedDriver = await Driver.findOne({ email: "test@delete.com" });
+    assert(deletedDriver === null);
+  });
 });
