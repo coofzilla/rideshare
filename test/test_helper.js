@@ -11,10 +11,9 @@ before(async () => {
 });
 
 beforeEach(async () => {
-  const { drivers } = mongoose.connection.collections;
+  const { drivers } = await mongoose.connection.collections;
+
   try {
     await drivers.drop();
-  } catch (error) {
-    console.log("ERROR IS:", error);
-  }
+  } catch {}
 });

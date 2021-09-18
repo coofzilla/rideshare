@@ -11,8 +11,8 @@ module.exports = {
       const driverProps = req.body;
       const driver = await Driver.create(driverProps);
       res.send(driver);
-    } catch {
-      next();
+    } catch (error) {
+      next(error);
     }
   },
 };
