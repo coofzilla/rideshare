@@ -8,7 +8,7 @@ module.exports = {
 
   async create(req, res, next) {
     try {
-      const driverProps = req.body;
+      const driverProps = await req.body;
       const driver = await Driver.create(driverProps);
       res.send(driver);
     } catch (error) {
